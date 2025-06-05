@@ -62,3 +62,9 @@ document.getElementById("kiCheckForm").addEventListener("submit", function (e) {
     console.error("Webhook-Fehler");
   });
 });
+.then(() => {
+  alert("Zertifikat wird erstellt. Sie erhalten in Kürze eine E-Mail.");
+})
+.catch(() => {
+  alert("Es ist ein Fehler aufgetreten. Bitte erneut versuchen.");
+});
