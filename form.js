@@ -68,3 +68,15 @@ document.getElementById("kiCheckForm").addEventListener("submit", function (e) {
 .catch(() => {
   alert("Es ist ein Fehler aufgetreten. Bitte erneut versuchen.");
 });
+<script>
+let current = 0;
+const testimonials = document.querySelectorAll('.testimonial');
+
+function showNextTestimonial() {
+  testimonials[current].classList.remove('active');
+  current = (current + 1) % testimonials.length;
+  testimonials[current].classList.add('active');
+}
+
+setInterval(showNextTestimonial, 6000); // alle 6 Sekunden wechseln
+</script>
