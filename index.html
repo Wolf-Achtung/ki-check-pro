@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KI-Check Pro – Compliance-Selbstcheck</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Kostenfreier KI-Risiko-Check & Empfehlung</h1>
+    <p>Wie sicher und regelkonform ist der KI-Einsatz in Ihrem Unternehmen? Mit diesem anonymen Schnell-Check erhalten Sie eine erste Einschätzung zu Risiken und Chancen – basierend auf EU AI Act & DSGVO.</p>
+    
+    <form id="kiCheckForm">
+      <ol>
+        <li>Setzt Ihr Unternehmen KI-Systeme für geschäftliche Zwecke ein?<br>
+          <label><input type="radio" name="q1" value="2"> Ja</label>
+          <label><input type="radio" name="q1" value="1"> Teilweise / Geplant</label>
+          <label><input type="radio" name="q1" value="0"> Nein</label>
+        </li>
+        <!-- Dupliziere diesen Block für Fragen q2 bis q10 -->
+        <li>Haben Sie Verantwortlichkeiten für den Umgang mit KI formal festgelegt?<br>
+          <label><input type="radio" name="q2" value="2"> Ja</label>
+          <label><input type="radio" name="q2" value="1"> Teilweise / Geplant</label>
+          <label><input type="radio" name="q2" value="0"> Nein</label>
+        </li>
+        <!-- ...bis Frage 10 -->
+        <li>Untersuchen Sie Fehler in KI-Systemen und führen eine Dokumentation?<br>
+          <label><input type="radio" name="q10" value="2"> Ja</label>
+          <label><input type="radio" name="q10" value="1"> Teilweise / Geplant</label>
+          <label><input type="radio" name="q10" value="0"> Nein</label>
+        </li>
+      </ol>
+
+      <button type="submit">Zertifikat anfordern</button>
+    </form>
+
+    <div id="ergebnis" class="hidden">
+      <h2>Ihre Kurz-Bewertung:</h2>
+      <p id="bewertungText"></p>
+      <a id="proLink" href="#" class="pro-btn hidden">KI-Check Pro starten</a>
+    </div>
+
+    <footer>
+      <p>Dieser Check ersetzt keine rechtliche Beratung. Ihre Angaben werden nicht gespeichert.</p>
+    </footer>
+  </div>
+
+  <script src="form.js"></script>
+</body>
+</html>
