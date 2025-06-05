@@ -5,22 +5,102 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>KI-Check Pro – Ihre KI. Ihre Verantwortung.</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      font-family: 'IBM Plex Mono', monospace;
+      background: #f9fafc;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 900px;
+      margin: auto;
+      padding: 2rem;
+      background: white;
+    }
+    h1, h2 {
+      color: #0c2d48;
+    }
+    ul li {
+      margin-bottom: 0.5rem;
+    }
+    .button {
+      display: inline-block;
+      padding: 0.75rem 1.5rem;
+      background-color: #0c2d48;
+      color: white;
+      text-decoration: none;
+      border-radius: 4px;
+      font-weight: bold;
+    }
+    .trust-box {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      background-color: #eef4f7;
+      padding: 1.5rem;
+      border-radius: 8px;
+      margin: 2rem 0;
+    }
+    .trust-item img {
+      height: 40px;
+      object-fit: contain;
+    }
+    .testimonial-section {
+      background: #f1f5f9;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+    .testimonial-carousel {
+      max-width: 700px;
+      margin: 0 auto;
+      position: relative;
+    }
+    .testimonial {
+      display: none;
+      background: white;
+      padding: 1.5rem;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+    .testimonial.active {
+      display: block;
+      animation: fadeIn 0.6s ease-in-out;
+    }
+    .testimonial span {
+      display: block;
+      margin-top: 1rem;
+      font-weight: bold;
+      color: #0c2d48;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    footer {
+      text-align: center;
+      font-size: 0.9rem;
+      color: #666;
+      margin-top: 3rem;
+    }
+  </style>
 </head>
 <body>
   <div class="container">
-
     <h1>Zertifiziert. Dokumentiert. KI-konform.</h1>
     <p>
       Mit dem <strong>KI-Check Pro</strong> erhalten Sie eine rechtssichere Einschätzung Ihres KI-Einsatzes – inkl. PDF-Nachweis, 
-      Handlungsempfehlungen und einem geprüften KI-Ready-Badge.<br><br>
+      Handlungsempfehlungen und einem geprüften KI-Ready-Badge.
+      <br><br>
       Ihr DSGVO-/AI-Act-Check ist steuerlich absetzbar und dokumentiert Ihre Sorgfaltspflicht gegenüber Kunden, Bewerbern und Behörden.
     </p>
 
-    <!-- TRUST BOX -->
     <div class="trust-box">
-      <div class="trust-item">🛡 TÜV-Zertifiziert (KI-Manager)</div>
-      <div class="trust-item">📘 DSGVO & EU AI Act-konform</div>
-      <div class="trust-item">💶 Steuerlich absetzbares PDF-Zertifikat</div>
+      <div class="trust-item"><img src="tuev-logo-transparent.png" alt="TÜV zertifiziert"></div>
+      <div class="trust-item"><img src="eu-ai.svg" alt="EU AI Act Ready"></div>
+      <div class="trust-item"><img src="ki-ready.svg" alt="KI Ready 2025 Badge"></div>
     </div>
 
     <ul>
@@ -42,8 +122,6 @@
 
     <a href="/#kiCheckForm" class="button">Jetzt prüfen – Zertifikat sichern</a>
 
-    <hr>
-
     <section>
       <h2>Warum dieser Check?</h2>
       <p>
@@ -52,29 +130,42 @@
         Dokumentieren Sie Ihre Sorgfaltspflicht und vermeiden Sie Risiken, bevor es teuer wird.
       </p>
     </section>
+  </div>
 
-    <footer>
-      <p style="margin-top: 3rem;">Zertifiziert durch TÜV Austria | DSGVO-konform | Made in Germany</p>
-    </footer>
-  </div>
-<section class="testimonial-section">
-  <h2>Was unsere Kunden sagen</h2>
-  <div class="testimonial-carousel" id="carousel">
-    <div class="testimonial active">
-      <p>„Der KI-Check hat uns in 10 Minuten Klarheit verschafft. Ideal für kleinere Unternehmen ohne Rechtsabteilung.“</p>
-      <span>— Anna L., Inhaberin Marketingagentur</span>
+  <section class="testimonial-section">
+    <h2>Was unsere Kunden sagen</h2>
+    <div class="testimonial-carousel" id="carousel">
+      <div class="testimonial active">
+        <p>„Der KI-Check hat uns in 10 Minuten Klarheit verschafft. Ideal für kleinere Unternehmen ohne Rechtsabteilung.“</p>
+        <span>— Anna L., Inhaberin Marketingagentur</span>
+      </div>
+      <div class="testimonial">
+        <p>„Endlich ein Tool, das verständlich erklärt, wo wir mit KI rechtlich stehen – und das auch noch steuerlich absetzbar ist.“</p>
+        <span>— Martin G., IT-Berater</span>
+      </div>
+      <div class="testimonial">
+        <p>„Schnell, klar, rechtssicher: Genau so ein Zertifikat hat mir für Kundenprojekte gefehlt.“</p>
+        <span>— Julia F., Freelancerin UX-Design</span>
+      </div>
     </div>
-    <div class="testimonial">
-      <p>„Endlich ein Tool, das verständlich erklärt, wo wir mit KI rechtlich stehen – und das auch noch steuerlich absetzbar ist.“</p>
-      <span>— Martin G., IT-Berater</span>
-    </div>
-    <div class="testimonial">
-      <p>„Schnell, klar, rechtssicher: Genau so ein Zertifikat hat mir für Kundenprojekte gefehlt.“</p>
-      <span>— Julia F., Freelancerin UX-Design</span>
-    </div>
-  </div>
-</section>
+  </section>
+
+  <footer>
+    <p>Zertifiziert durch TÜV Austria | DSGVO-konform | Made in Germany</p>
+  </footer>
+
+  <script>
+    let current = 0;
+    const testimonials = document.querySelectorAll('.testimonial');
+    setInterval(() => {
+      testimonials[current].classList.remove('active');
+      current = (current + 1) % testimonials.length;
+      testimonials[current].classList.add('active');
+    }, 6000);
+  </script>
+<div class="sticky-bar">
+  <a href="/#kiCheckForm" class="sticky-button">🚀 KI-Check starten</a>
+</div>
 
 </body>
-
 </html>
