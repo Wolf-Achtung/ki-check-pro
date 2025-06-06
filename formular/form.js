@@ -1,66 +1,42 @@
-document.getElementById("kiCheckForm").addEventListener("submit", function (e) {
-  e.preventDefault();
+document.addEventListener("DOMContentLoaded", function () {
+  const form = document.getElementById("ki-check-form");
 
-  let score = 0;
-  for (let i = 1; i <= 10; i++) {
-    const selected = document.querySelector(`input[name="q${i}"]:checked`);
-    if (selected) score += parseInt(selected.value);
+  if (!form) {
+    console.error("Formular nicht gefunden!");
+    return;
   }
 
-  const ergebnis = document.getElementById("ergebnis");
-  const text = document.getElementById("bewertungText");
-  const proBtn = document.getElementById("proLink");
+  form.addEventListener("submit", async function (e) {
+    e.preventDefault();
 
-  ergebnis.classList.remove("hidden");
+    const formData = new FormData(form);
+    const jsonData = {};
 
-  let bewertung = "";
-  let status = "";
-  let badge = "";
+    formData.forEach((value, key) => {
+      jsonData[key] = value;
+    });
 
-  if (score <= 7) {
-    bewertung = "Kritisch";
-    status = "Nicht konform";
-    badge = "https://check.ki-sicherheit.jetzt/badges/badge-kritisch.png";
-    text.innerHTML = "<strong>Kritisch:</strong> Ihr KI-Einsatz weist gravierende Lücken auf.";
-  } else if (score <= 13) {
-    bewertung = "Ausbaufähig";
-    status = "Teilkonform";
-    badge = "https://check.ki-sicherheit.jetzt/badges/badge-ausbau.png";
-    text.innerHTML = "<strong>Ausbaufähig:</strong> Erste Strukturen sind erkennbar – handeln Sie jetzt!";
-  } else {
-    bewertung = "KI-Ready 2025";
-    status = "Konform";
-    badge = "https://check.ki-sicherheit.jetzt/badges/KI-READY.png";
-    text.innerHTML = "<strong>KI-Ready 2025:</strong> Sie erfüllen zentrale Anforderungen – gut gemacht!";
-  }
+    console.log("🚀 Sende Daten an Webhook:", jsonData);
 
-  proBtn.classList.remove("hidden");
-  proBtn.href = "https://check.ki-sicherheit.jetzt/zertifikat";
+    try {
+      const response = await fetch("https://hook.eu2.make.com/kuupzg3nxvpy5xm84zb7j8pmrcon2r2r", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(jsonData)
+      });
 
-  const unternehmen = document.getElementById("unternehmen").value || "Unbekannt";
-
-  const payload = {
-    score: score,
-    bewertung: bewertung,
-    status: status,
-    empfehlung1: "Führen Sie ein zentrales Verzeichnis über eingesetzte KI-Systeme.",
-    empfehlung2: "Prüfen Sie AV-Verträge mit Anbietern wie OpenAI oder Microsoft.",
-    empfehlung3: "Ergänzen Sie Ihre Datenschutzerklärung um Informationen zum KI-Einsatz.",
-    badge_url: badge,
-    unternehmen: unternehmen,
-    datum: new Date().toLocaleDateString("de-DE"),
-    gueltig_bis: "30.06.2026"
-  };
-
-  fetch("https://hook.eu2.make.com/kuupzg3nxvpy5xm84zb7j8pmrcon2r2r", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload)
-  })
-  .then(() => {
-    window.location.href = "/danke.html";
-  })
-  .catch(() => {
-    alert("Es ist ein Fehler aufgetreten. Bitte erneut versuchen.");
+      if (response.ok) {
+        console.log("✅ Erfolgreich gesendet");
+        window.location.href = "/danke.html";
+      } else {
+        console.error("❌ Fehler beim Senden:", response.statusText);
+        alert("Fehler beim Senden des Formulars. Bitte erneut versuchen.");
+      }
+    } catch (error) {
+      console.error("❌ Fehler im fetch:", error);
+      alert("Verbindung zum Server fehlgeschlagen.");
+    }
   });
 });
