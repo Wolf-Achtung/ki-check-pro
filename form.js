@@ -52,22 +52,18 @@ document.getElementById("kiCheckForm").addEventListener("submit", function (e) {
   };
 
   // 🚀 Webhook-Aufruf an Make.com (hier DEINE URL einsetzen!)
-  fetch("https://hook.eu2.make.com/kuupzg3nxvpy5xm84zb7j8pmrcon2r2r", {
-    method: "POST",
-    body: JSON.stringify(payload),
-    headers: { "Content-Type": "application/json" }
-  }).then(() => {
-    console.log("Webhook erfolgreich ausgelöst.");
-  }).catch(() => {
-    console.error("Webhook-Fehler");
-  });
-});
+fetch("https://hook.eu2.make.com/kuupzg3nxvpy5xm84zb7j8pmrcon2r2r", {
+  method: "POST",
+  body: JSON.stringify(payload),
+  headers: { "Content-Type": "application/json" }
+})
 .then(() => {
-  alert("Zertifikat wird erstellt. Sie erhalten in Kürze eine E-Mail.");
+  window.location.href = "/danke.html"; // oder "./danke.html" bei Unterverzeichnis
 })
 .catch(() => {
   alert("Es ist ein Fehler aufgetreten. Bitte erneut versuchen.");
 });
+
 <script>
 let current = 0;
 const testimonials = document.querySelectorAll('.testimonial');
