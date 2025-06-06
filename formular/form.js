@@ -37,7 +37,8 @@ document.getElementById("kiCheckForm").addEventListener("submit", function (e) {
   proBtn.classList.remove("hidden");
   proBtn.href = "https://check.ki-sicherheit.jetzt/zertifikat";
 
-  // ✉️ Payload für PDFMonkey über Make
+  const unternehmen = document.getElementById("unternehmen").value || "Unbekannt";
+
   const payload = {
     score: score,
     bewertung: bewertung,
@@ -46,33 +47,20 @@ document.getElementById("kiCheckForm").addEventListener("submit", function (e) {
     empfehlung2: "Prüfen Sie AV-Verträge mit Anbietern wie OpenAI oder Microsoft.",
     empfehlung3: "Ergänzen Sie Ihre Datenschutzerklärung um Informationen zum KI-Einsatz.",
     badge_url: badge,
-    unternehmen: "Muster GmbH",
+    unternehmen: unternehmen,
     datum: new Date().toLocaleDateString("de-DE"),
     gueltig_bis: "30.06.2026"
   };
 
-  // 🚀 Webhook-Aufruf an Make.com (hier DEINE URL einsetzen!)
-fetch("https://hook.eu2.make.com/kuupzg3nxvpy5xm84zb7j8pmrcon2r2r", {
-  method: "POST",
-  body: JSON.stringify(payload),
-  headers: { "Content-Type": "application/json" }
-})
-.then(() => {
-  window.location.href = "/danke.html"; // oder "./danke.html" bei Unterverzeichnis
-})
-.catch(() => {
-  alert("Es ist ein Fehler aufgetreten. Bitte erneut versuchen.");
+  fetch("https://hook.eu2.make.com/kuupzg3nxvpy5xm84zb7j8pmrcon2r2r", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  })
+  .then(() => {
+    window.location.href = "/danke.html";
+  })
+  .catch(() => {
+    alert("Es ist ein Fehler aufgetreten. Bitte erneut versuchen.");
+  });
 });
-
-<script>
-let current = 0;
-const testimonials = document.querySelectorAll('.testimonial');
-
-function showNextTestimonial() {
-  testimonials[current].classList.remove('active');
-  current = (current + 1) % testimonials.length;
-  testimonials[current].classList.add('active');
-}
-
-setInterval(showNextTestimonial, 6000); // alle 6 Sekunden wechseln
-</script>
