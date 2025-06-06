@@ -148,6 +148,14 @@
       </ul>
     </div>
 
+<div class="price-box" style="background:#fffbe6; border-left: 6px solid #ffc107;">
+      <h3>💡 Pro-Tipp für Profis</h3>
+      <p>
+        Nutzen Sie das PDF-Zertifikat als Beilage in Angeboten, Pitches oder Datenschutzunterlagen. 
+        Es signalisiert KI-Verantwortung und schafft sofort Vertrauen bei Kunden, Partnern und Prüfern.
+      </p>
+    </div>
+
     <div class="risk-table">
       <div><strong>❌ Keine Dokumentation</strong><br>→ Reputationsrisiko & Rechtsunsicherheit</div>
       <div><strong>⚠️ Kein Audit-Trail</strong><br>→ Verstoß gegen AI Act möglich</div>
@@ -157,13 +165,9 @@
 
     <section>
       <h2>Was unsere Kunden sagen</h2>
-      <div class="testimonial">
-        <p>„Schnell, klar, rechtssicher: Genau so ein Zertifikat hat mir für Kundenprojekte gefehlt.“</p>
-        <span>– Julia F., Freelancerin UX</span>
-      </div>
-      <div class="testimonial">
-        <p>„Ideal für kleinere Unternehmen ohne IT- oder Rechtsabteilung – das PDF hängt jetzt in jedem Angebot.“</p>
-        <span>– Martin G., Digitalberater</span>
+      <div class="testimonial" id="carousel">
+        <p id="quote">„Schnell, klar, rechtssicher: Genau so ein Zertifikat hat mir für Kundenprojekte gefehlt.“</p>
+        <span id="author">– Julia F., Freelancerin UX</span>
       </div>
     </section>
 
@@ -186,6 +190,22 @@
   <footer>
     Zertifiziert durch TÜV Austria | DSGVO-konform | www.ki-sicherheit.jetzt
   </footer>
+<script>
+  const quotes = [
+    { text: "„Schnell, klar, rechtssicher: Genau so ein Zertifikat hat mir für Kundenprojekte gefehlt.“", author: "– Julia F., Freelancerin UX" },
+    { text: "„Ideal für kleinere Unternehmen ohne IT- oder Rechtsabteilung – das PDF hängt jetzt in jedem Angebot.“", author: "– Martin G., Digitalberater" },
+    { text: "„Endlich kann ich unseren KI-Einsatz auch nach außen dokumentieren.“", author: "– Miriam T., Agenturleitung" },
+    { text: "„Wir setzen den Check verpflichtend für alle Abteilungen ein – einfach und effektiv.“", author: "– Jan W., CISO Mittelstand" },
+    { text: "„Das KI-Ready-Badge bringt uns als Startup echten Vertrauensvorschuss.“", author: "– Lara S., Gründerin" }
+  ];
+
+  let i = 0;
+  setInterval(() => {
+    i = (i + 1) % quotes.length;
+    document.getElementById('quote').innerText = quotes[i].text;
+    document.getElementById('author').innerText = quotes[i].author;
+  }, 6000);
+</script>
 
 </body>
 </html>
