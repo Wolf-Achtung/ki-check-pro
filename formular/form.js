@@ -2,8 +2,8 @@ document.getElementById("ki-check-form").addEventListener("submit", async functi
   event.preventDefault();
 
   const form = event.target;
-
   const formData = new FormData(form);
+
   const data = {
     unternehmen: formData.get("unternehmen"),
     name: formData.get("name"),
@@ -25,6 +25,7 @@ document.getElementById("ki-check-form").addEventListener("submit", async functi
 
   data.score = score;
 
+  // Bewertungslogik mit Badges
   if (score >= 26) {
     data.bewertung = "KI-Ready 2025";
     data.status = "Konform";
@@ -39,12 +40,13 @@ document.getElementById("ki-check-form").addEventListener("submit", async functi
     data.badge_url = "https://check.ki-sicherheit.jetzt/badges/risikoalarm.png";
   }
 
+  // Datumsfelder
   const heute = new Date();
   const gueltigBis = new Date(heute.getFullYear() + 1, 11, 31);
   data.datum = heute.toLocaleDateString("de-DE");
   data.gueltig_bis = gueltigBis.toLocaleDateString("de-DE");
 
-  // Empfehlungen bei Bedarf hier setzen
+  // Empfehlungen (werden ins PDF übernommen)
   data.empfehlung1 = "Richten Sie ein KI-Verzeichnis ein.";
   data.empfehlung2 = "Schulen Sie Mitarbeitende im KI-Einsatz.";
   data.empfehlung3 = "Nutzen Sie unseren Risikoalarm oder ein Audit.";
