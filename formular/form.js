@@ -1,63 +1,66 @@
-document.getElementById("kiCheckForm").addEventListener("submit", function (e) {
-  e.preventDefault();
+document.getElementById("ki-check-form").addEventListener("submit", async function (event) {
+  event.preventDefault();
 
-  const form = e.target;
-  const payload = {};
+  const form = event.target;
 
-  // Allgemeine Felder auslesen
-  payload.unternehmen = form.unternehmen.value || "Unbekannt";
-  payload.branche = form.branche.value || "nicht angegeben";
-  payload.massnahme = form.massnahme.value || "nicht angegeben";
-  payload.freelancer = form.freelancer?.checked ? "ja" : "nein";
-  payload.expertenprofil = form.expertenprofil?.value || "";
+  const formData = new FormData(form);
+  const data = {
+    unternehmen: formData.get("unternehmen"),
+    name: formData.get("name"),
+    branche: formData.get("branche"),
+    selbststaendig: formData.get("selbststaendig"),
+    massnahme: formData.get("massnahme"),
+  };
 
-  // Score berechnen
   let score = 0;
   for (let i = 1; i <= 10; i++) {
-    const selected = form[`q${i}`].value;
-    if (selected) score += parseInt(selected);
-    payload[`q${i}`] = selected;
+    const val = parseInt(formData.get(`q${i}`), 10);
+    if (!val) {
+      alert(`Frage ${i} bitte ausfüllen.`);
+      return;
+    }
+    data[`q${i}`] = val;
+    score += val;
   }
 
-  payload.score = score;
+  data.score = score;
 
-  // Bewertung
-  if (score <= 7) {
-    payload.bewertung = "Kritisch";
-    payload.status = "Nicht konform";
-    payload.badge_url = "https://check.ki-sicherheit.jetzt/badges/badge-kritisch.png";
-  } else if (score <= 13) {
-    payload.bewertung = "Ausbaufähig";
-    payload.status = "Teilkonform";
-    payload.badge_url = "https://check.ki-sicherheit.jetzt/badges/badge-ausbau.png";
+  if (score >= 26) {
+    data.bewertung = "KI-Ready 2025";
+    data.status = "Konform";
+    data.badge_url = "https://check.ki-sicherheit.jetzt/badges/ki-ready.png";
+  } else if (score >= 18) {
+    data.bewertung = "Basis-Check bestanden";
+    data.status = "Teilweise konform";
+    data.badge_url = "https://check.ki-sicherheit.jetzt/badges/basischeck.png";
   } else {
-    payload.bewertung = "KI-Ready 2025";
-    payload.status = "Konform";
-    payload.badge_url = "https://check.ki-sicherheit.jetzt/badges/KI-READY.png";
+    data.bewertung = "Kritisch";
+    data.status = "Nicht konform";
+    data.badge_url = "https://check.ki-sicherheit.jetzt/badges/risikoalarm.png";
   }
 
-  // Datum
-  const today = new Date();
-  payload.datum = today.toLocaleDateString("de-DE");
-  const expiry = new Date(today.getFullYear() + 1, 5, 30); // 30.06. nächstes Jahr
-  payload.gueltig_bis = expiry.toLocaleDateString("de-DE");
+  const heute = new Date();
+  const gueltigBis = new Date(heute.getFullYear() + 1, 11, 31);
+  data.datum = heute.toLocaleDateString("de-DE");
+  data.gueltig_bis = gueltigBis.toLocaleDateString("de-DE");
 
-  // Empfehlungen dynamisch (hier vereinfacht – kann noch optimiert werden)
-  payload.empfehlung1 = "Führen Sie ein zentrales Verzeichnis über Ihre KI-Systeme.";
-  payload.empfehlung2 = "Prüfen Sie AV-Verträge und rechtliche Vereinbarungen.";
-  payload.empfehlung3 = "Stellen Sie eine verständliche KI-Dokumentation bereit.";
+  // Empfehlungen bei Bedarf hier setzen
+  data.empfehlung1 = "Richten Sie ein KI-Verzeichnis ein.";
+  data.empfehlung2 = "Schulen Sie Mitarbeitende im KI-Einsatz.";
+  data.empfehlung3 = "Nutzen Sie unseren Risikoalarm oder ein Audit.";
 
-  // Senden an Make.com Webhook
-  fetch("https://hook.eu2.make.com/kuupzg3nxvpy5xm84zb7j8pmrcon2r2r", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload)
-  })
-  .then(() => {
-    window.location.href = "/danke.html";
-  })
-  .catch((error) => {
-    console.error("Fehler beim Absenden:", error);
-    alert("Es ist ein Fehler aufgetreten. Bitte erneut versuchen.");
-  });
+  try {
+    const response = await fetch("https://hook.eu2.make.com/kuupzg3nxvpy5xm84zb7j8pmrcon2r2r", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) throw new Error("Webhook-Fehler");
+    alert("Vielen Dank! Ihr Zertifikat wird jetzt erstellt.");
+    form.reset();
+  } catch (err) {
+    console.error("Fehler beim Absenden:", err);
+    alert("Es gab ein Problem. Bitte später erneut versuchen.");
+  }
 });
