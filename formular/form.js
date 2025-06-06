@@ -1,87 +1,63 @@
-document.addEventListener("DOMContentLoaded", function () {
-  const form = document.getElementById("ki-check-form");
+document.getElementById("kiCheckForm").addEventListener("submit", function (e) {
+  e.preventDefault();
 
-  if (!form) {
-    console.error("❌ Formular nicht gefunden!");
-    return;
+  const form = e.target;
+  const payload = {};
+
+  // Allgemeine Felder auslesen
+  payload.unternehmen = form.unternehmen.value || "Unbekannt";
+  payload.branche = form.branche.value || "nicht angegeben";
+  payload.massnahme = form.massnahme.value || "nicht angegeben";
+  payload.freelancer = form.freelancer?.checked ? "ja" : "nein";
+  payload.expertenprofil = form.expertenprofil?.value || "";
+
+  // Score berechnen
+  let score = 0;
+  for (let i = 1; i <= 10; i++) {
+    const selected = form[`q${i}`].value;
+    if (selected) score += parseInt(selected);
+    payload[`q${i}`] = selected;
   }
 
-  form.addEventListener("submit", async function (e) {
-    e.preventDefault();
+  payload.score = score;
 
-    // Score berechnen
-    let score = 0;
-    const empfehlungen = [];
-    const antworten = {};
+  // Bewertung
+  if (score <= 7) {
+    payload.bewertung = "Kritisch";
+    payload.status = "Nicht konform";
+    payload.badge_url = "https://check.ki-sicherheit.jetzt/badges/badge-kritisch.png";
+  } else if (score <= 13) {
+    payload.bewertung = "Ausbaufähig";
+    payload.status = "Teilkonform";
+    payload.badge_url = "https://check.ki-sicherheit.jetzt/badges/badge-ausbau.png";
+  } else {
+    payload.bewertung = "KI-Ready 2025";
+    payload.status = "Konform";
+    payload.badge_url = "https://check.ki-sicherheit.jetzt/badges/KI-READY.png";
+  }
 
-    const fields = form.querySelectorAll("input[type=radio]:checked, input[type=text]");
-    fields.forEach(field => {
-      const name = field.name;
-      const value = field.value;
-      antworten[name] = value;
+  // Datum
+  const today = new Date();
+  payload.datum = today.toLocaleDateString("de-DE");
+  const expiry = new Date(today.getFullYear() + 1, 5, 30); // 30.06. nächstes Jahr
+  payload.gueltig_bis = expiry.toLocaleDateString("de-DE");
 
-      if (value === "Ja") score += 3;
-      else if (value === "teilweise") score += 2;
-      else if (value === "Nein") score += 1;
-    });
+  // Empfehlungen dynamisch (hier vereinfacht – kann noch optimiert werden)
+  payload.empfehlung1 = "Führen Sie ein zentrales Verzeichnis über Ihre KI-Systeme.";
+  payload.empfehlung2 = "Prüfen Sie AV-Verträge und rechtliche Vereinbarungen.";
+  payload.empfehlung3 = "Stellen Sie eine verständliche KI-Dokumentation bereit.";
 
-    // Bewertung & Badge
-    let bewertung = "", status = "", badge_url = "", emp1 = "", emp2 = "", emp3 = "";
-
-    if (score >= 24) {
-      bewertung = "Exzellent";
-      status = "KI-Ready 2025";
-      badge_url = "https://check.ki-sicherheit.jetzt/assets/KI-READY.png";
-    } else if (score >= 18) {
-      bewertung = "Gut vorbereitet";
-      status = "Ausbaufähig";
-      badge_url = "https://check.ki-sicherheit.jetzt/assets/KI-AUSBAU.png";
-    } else {
-      bewertung = "Kritisch";
-      status = "Nicht konform";
-      badge_url = "https://check.ki-sicherheit.jetzt/assets/KI-KRITISCH.png";
-    }
-
-    // Empfehlungen je nach Bewertung
-    if (score < 24) emp1 = "Richten Sie ein KI-Verzeichnis mit AV-Verträgen ein.";
-    if (score < 18) emp2 = "Schulen Sie gezielt Mitarbeitende im KI-Einsatz.";
-    if (score < 15) emp3 = "Nutzen Sie unseren Risikoalarm oder ein Audit.";
-
-    // Payload aufbauen
-    const payload = {
-      unternehmen: antworten.unternehmen || "Unbenannt",
-      datum: new Date().toLocaleDateString("de-DE"),
-      gueltig_bis: "31.12.2025",
-      score: score,
-      bewertung: bewertung,
-      status: status,
-      badge_url: badge_url,
-      empfehlung1: emp1,
-      empfehlung2: emp2,
-      empfehlung3: emp3
-    };
-
-    console.log("🚀 Sende an Make:", payload);
-
-    try {
-      const res = await fetch("https://hook.eu2.make.com/kuupzg3nxvpy5xm84zb7j8pmrcon2r2r", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(payload)
-      });
-
-      if (res.ok) {
-        console.log("✅ Erfolgreich übertragen");
-        window.location.href = "danke.html";
-      } else {
-        console.error("❌ Fehler beim Senden an Make:", res.statusText);
-        alert("Übertragung fehlgeschlagen.");
-      }
-    } catch (err) {
-      console.error("❌ Fehler in fetch:", err);
-      alert("Verbindung fehlgeschlagen.");
-    }
+  // Senden an Make.com Webhook
+  fetch("https://hook.eu2.make.com/kuupzg3nxvpy5xm84zb7j8pmrcon2r2r", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  })
+  .then(() => {
+    window.location.href = "/danke.html";
+  })
+  .catch((error) => {
+    console.error("Fehler beim Absenden:", error);
+    alert("Es ist ein Fehler aufgetreten. Bitte erneut versuchen.");
   });
 });

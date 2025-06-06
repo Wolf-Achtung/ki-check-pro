@@ -2,93 +2,121 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>KI-Check Pro – Formular</title>
-  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KI-Check Pro</title>
+  <link rel="stylesheet" href="../style.css" />
 </head>
 <body>
-  <main class="formular-container">
-    <h1>KI-Check Pro</h1>
+  <main class="container">
+    <h1>KI-Check Pro – Jetzt starten</h1>
+
     <form id="ki-check-form">
-      <label for="unternehmen">Ihr Unternehmen:</label>
-      <input type="text" id="unternehmen" name="unternehmen" placeholder="z. B. Muster GmbH" required>
-      <hr>
+
+      <label>Unternehmen / Name:</label><br />
+      <input type="text" name="unternehmen" required /><br /><br />
+
+      <label>Branche:</label><br />
+      <select name="branche" required>
+        <option value="">Bitte wählen</option>
+        <option value="Industrie">Industrie</option>
+        <option value="Handwerk">Handwerk</option>
+        <option value="Handel">Handel</option>
+        <option value="Dienstleistung">Dienstleistung</option>
+        <option value="Gesundheit">Gesundheit</option>
+        <option value="Medien">Medien</option>
+        <option value="Bildung">Bildung</option>
+        <option value="IT / Tech">IT / Tech</option>
+        <option value="Öffentlich">Öffentliche Einrichtung</option>
+        <option value="Sonstige">Sonstige</option>
+      </select><br /><br />
+
+      <label>Selbstständig / Freiberuflich:</label><br />
+      <input type="radio" name="selbststaendig" value="ja" required /> Ja<br />
+      <input type="radio" name="selbststaendig" value="nein" /> Nein<br /><br />
+
+      <label>Expertenprofil vorhanden?</label><br />
+      <input type="radio" name="expertenprofil" value="ja" required /> Ja<br />
+      <input type="radio" name="expertenprofil" value="nein" /> Nein<br /><br />
+
+      <label>Geplante Maßnahmen (optional):</label><br />
+      <textarea name="massnahmen" rows="4" cols="50" placeholder="Welche Maßnahmen planen Sie zur KI-Sicherheit oder -Compliance?"></textarea><br /><br />
+
+      <!-- Originalfragen q1–q10 -->
 
       <fieldset>
-        <legend>1. Gibt es eine dokumentierte Strategie oder Richtlinie für den Einsatz von Künstlicher Intelligenz in Ihrem Unternehmen?</legend>
-        <label><input type="radio" name="q1" value="3"> Ja</label>
-        <label><input type="radio" name="q1" value="2"> Teilweise / geplant</label>
-        <label><input type="radio" name="q1" value="1"> Nein</label>
-      </fieldset>
+        <legend>1. Gibt es eine dokumentierte KI-Strategie in Ihrem Unternehmen?</legend>
+        <input type="radio" name="q1" value="3" required /> Ja<br />
+        <input type="radio" name="q1" value="2" /> Teilweise / in Entwicklung<br />
+        <input type="radio" name="q1" value="1" /> Nein<br />
+      </fieldset><br />
 
       <fieldset>
-        <legend>2. Werden neue KI-Systeme vor ihrem Einsatz auf DSGVO- und EU AI Act-Konformität geprüft und dokumentiert?</legend>
-        <label><input type="radio" name="q2" value="3"> Ja</label>
-        <label><input type="radio" name="q2" value="2"> Teilweise / geplant</label>
-        <label><input type="radio" name="q2" value="1"> Nein</label>
-      </fieldset>
+        <legend>2. Prüfen Sie bei neuen Projekten aktiv auf DSGVO- & AI-Act-Konformität?</legend>
+        <input type="radio" name="q2" value="3" required /> Ja<br />
+        <input type="radio" name="q2" value="2" /> Teilweise<br />
+        <input type="radio" name="q2" value="1" /> Nein<br />
+      </fieldset><br />
 
       <fieldset>
-        <legend>3. Haben Sie eine nachvollziehbare Entscheidungsmatrix oder Risikoabwägung für KI-Anwendungen erstellt (z. B. nach Hoch-/Niedrigrisiko gemäß EU AI Act)?</legend>
-        <label><input type="radio" name="q3" value="3"> Ja</label>
-        <label><input type="radio" name="q3" value="2"> Teilweise / geplant</label>
-        <label><input type="radio" name="q3" value="1"> Nein</label>
-      </fieldset>
+        <legend>3. Nutzen Sie eine Risikoeinstufung bzw. KI-Risikomatrix zur Bewertung?</legend>
+        <input type="radio" name="q3" value="3" required /> Ja<br />
+        <input type="radio" name="q3" value="2" /> Teilweise<br />
+        <input type="radio" name="q3" value="1" /> Nein<br />
+      </fieldset><br />
 
       <fieldset>
-        <legend>4. Führen Sie ein zentrales Verzeichnis über eingesetzte KI-Tools und deren Einsatzzwecke, Datenarten und Anbieter?</legend>
-        <label><input type="radio" name="q4" value="3"> Ja</label>
-        <label><input type="radio" name="q4" value="2"> Teilweise / geplant</label>
-        <label><input type="radio" name="q4" value="1"> Nein</label>
-      </fieldset>
+        <legend>4. Führen Sie ein internes KI-Tool-Verzeichnis?</legend>
+        <input type="radio" name="q4" value="3" required /> Ja<br />
+        <input type="radio" name="q4" value="2" /> Teilweise<br />
+        <input type="radio" name="q4" value="1" /> Nein<br />
+      </fieldset><br />
 
       <fieldset>
-        <legend>5. Liegen bei Nutzung von externen KI-Anbietern (z. B. API, ChatGPT, Midjourney etc.) AV-Verträge oder vergleichbare Vereinbarungen vor?</legend>
-        <label><input type="radio" name="q5" value="3"> Ja</label>
-        <label><input type="radio" name="q5" value="2"> Teilweise / in Vorbereitung</label>
-        <label><input type="radio" name="q5" value="1"> Nein</label>
-      </fieldset>
+        <legend>5. Haben Sie AV-Verträge oder Vereinbarungen mit eingesetzten KI-Anbietern?</legend>
+        <input type="radio" name="q5" value="3" required /> Ja<br />
+        <input type="radio" name="q5" value="2" /> Teilweise<br />
+        <input type="radio" name="q5" value="1" /> Nein<br />
+      </fieldset><br />
 
       <fieldset>
-        <legend>6. Gibt es ein internes KI-Audit- oder Kontrollverfahren (regelmäßig oder anlassbezogen)?</legend>
-        <label><input type="radio" name="q6" value="3"> Ja</label>
-        <label><input type="radio" name="q6" value="2"> Teilweise / unregelmäßig</label>
-        <label><input type="radio" name="q6" value="1"> Nein</label>
-      </fieldset>
+        <legend>6. Führen Sie regelmäßige interne KI-Audits oder Systemprüfungen durch?</legend>
+        <input type="radio" name="q6" value="3" required /> Ja<br />
+        <input type="radio" name="q6" value="2" /> Teilweise<br />
+        <input type="radio" name="q6" value="1" /> Nein<br />
+      </fieldset><br />
 
       <fieldset>
-        <legend>7. Sind Mitarbeitende in sensiblen Bereichen (z. B. HR, Kundenkontakt, Marketing) speziell zum KI-Einsatz und Datenschutz geschult?</legend>
-        <label><input type="radio" name="q7" value="3"> Ja</label>
-        <label><input type="radio" name="q7" value="2"> Teilweise / geplant</label>
-        <label><input type="radio" name="q7" value="1"> Nein</label>
-      </fieldset>
+        <legend>7. Werden Mitarbeitende in sensiblen Bereichen zu KI-Risiken geschult?</legend>
+        <input type="radio" name="q7" value="3" required /> Ja<br />
+        <input type="radio" name="q7" value="2" /> Teilweise<br />
+        <input type="radio" name="q7" value="1" /> Nein<br />
+      </fieldset><br />
 
       <fieldset>
-        <legend>8. Lassen sich automatisierte Entscheidungen durch KI im Unternehmen begründen, nachvollziehen und ggf. manuell übersteuern?</legend>
-        <label><input type="radio" name="q8" value="3"> Ja</label>
-        <label><input type="radio" name="q8" value="2"> Teilweise</label>
-        <label><input type="radio" name="q8" value="1"> Nein</label>
-      </fieldset>
+        <legend>8. Können KI-Entscheidungen im Zweifel manuell übersteuert werden?</legend>
+        <input type="radio" name="q8" value="3" required /> Ja<br />
+        <input type="radio" name="q8" value="2" /> Teilweise<br />
+        <input type="radio" name="q8" value="1" /> Nein<br />
+      </fieldset><br />
 
       <fieldset>
-        <legend>9. Wurden Schutzmaßnahmen gegen mögliche KI-Fehlfunktionen, Datenlecks oder Missbrauch definiert (z. B. Logging, Eskalationspläne)?</legend>
-        <label><input type="radio" name="q9" value="3"> Ja</label>
-        <label><input type="radio" name="q9" value="2"> Teilweise</label>
-        <label><input type="radio" name="q9" value="1"> Nein</label>
-      </fieldset>
+        <legend>9. Existieren technische Schutzmaßnahmen gegen fehlerhafte KI-Ausgaben?</legend>
+        <input type="radio" name="q9" value="3" required /> Ja<br />
+        <input type="radio" name="q9" value="2" /> Teilweise<br />
+        <input type="radio" name="q9" value="1" /> Nein<br />
+      </fieldset><br />
 
       <fieldset>
-        <legend>10. Werden externe Stakeholder (z. B. Kund:innen, Bewerber:innen) aktiv über den Einsatz von KI informiert – z. B. durch Datenschutzinfos oder AGBs?</legend>
-        <label><input type="radio" name="q10" value="3"> Ja</label>
-        <label><input type="radio" name="q10" value="2"> Teilweise</label>
-        <label><input type="radio" name="q10" value="1"> Nein</label>
-      </fieldset>
+        <legend>10. Informieren Sie Kunden, Partner oder Behörden über den KI-Einsatz?</legend>
+        <input type="radio" name="q10" value="3" required /> Ja<br />
+        <input type="radio" name="q10" value="2" /> Teilweise<br />
+        <input type="radio" name="q10" value="1" /> Nein<br />
+      </fieldset><br />
 
-      <br>
-      <button type="submit" class="cta-button">Zertifikat anfordern</button>
+      <button type="submit">Zertifikat anfordern</button>
     </form>
   </main>
 
-  <script src="form.js"></script>
+  <script src="../form.js"></script>
 </body>
 </html>
