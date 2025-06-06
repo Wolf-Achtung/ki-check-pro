@@ -74,7 +74,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       if (res.ok) {
         console.log("✅ Erfolgreich übertragen");
-        window.location.href = "/danke.html";
+        window.location.href = "danke.html";
       } else {
         console.error("❌ Fehler beim Senden an Make:", res.statusText);
         alert("Übertragung fehlgeschlagen.");
