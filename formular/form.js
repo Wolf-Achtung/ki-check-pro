@@ -2,7 +2,16 @@ document.getElementById("kiForm").addEventListener("submit", async function (e) 
   e.preventDefault();
 
   const form = e.target;
-  const getValue = (name) => form[name]?.value?.trim() || "";
+const getValue = (name) => {
+  const el = form[name];
+  if (!el) return "";
+  if (el.length && el[0].type === "radio") {
+    const checked = [...el].find(e => e.checked);
+    return checked ? checked.value : "";
+  }
+  return el.value || "";
+};
+
 
   // Punkte pro Frage summieren
   let score = 0;
@@ -37,6 +46,9 @@ document.getElementById("kiForm").addEventListener("submit", async function (e) 
     datum: new Date().toLocaleDateString("de-DE"),
     gueltig_bis: "31.12.2025"
   };
+
+// ✅ Debug-Ausgabe prüfen:
+console.log("Payload:", payload);
 
   // PDFMonkey-Webhook senden
   try {
