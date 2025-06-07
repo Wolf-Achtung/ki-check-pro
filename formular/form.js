@@ -30,7 +30,8 @@ document.getElementById("kiForm").addEventListener("submit", async function (e) 
     branche: getValue("branche"),
     selbststaendig: getValue("selbststaendig"),
     massnahmen: getValue("massnahmen"),
-    score: score,
+ "score": score !== undefined ? score : 0,
+
     bewertung: bewertung,
     status: status,
     datum: new Date().toLocaleDateString("de-DE"),
