@@ -13,6 +13,7 @@ document.getElementById("kiForm").addEventListener("submit", async function (e) 
   // Bewertung & Status ableiten
   let bewertung = "";
   let status = "";
+
   if (score >= 24) {
     bewertung = "KI-Ready 2025";
     status = "Konform";
@@ -24,18 +25,21 @@ document.getElementById("kiForm").addEventListener("submit", async function (e) 
     status = "Nicht konform";
   }
 
-  // JSON-Payload erstellen
+  // Payload für PDFMonkey
   const payload = {
     unternehmen: getValue("unternehmen"),
     branche: getValue("branche"),
     selbststaendig: getValue("selbststaendig"),
     massnahmen: getValue("massnahmen"),
- "score": score !== undefined ? score : 0,
-
+    score: score,
     bewertung: bewertung,
     status: status,
     datum: new Date().toLocaleDateString("de-DE"),
-    gueltig_bis: "31.12.2025",
+    gueltig: "31.12.2025",
+    badge: "https://check.ki-sicherheit.jetzt/badges/ki-ready-2025.png",
+    empfehlung1: "Führen Sie ein zentrales Verzeichnis über eingesetzte KI-Systeme.",
+    empfehlung2: "Prüfen Sie AV-Verträge mit Anbietern wie OpenAI, Midjourney oder Microsoft.",
+    empfehlung3: "Ergänzen Sie Ihre Datenschutzerklärung um Informationen zum KI-Einsatz."
   };
 
   // PDFMonkey-Webhook senden
