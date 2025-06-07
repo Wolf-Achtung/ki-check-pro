@@ -25,7 +25,7 @@ document.getElementById("kiForm").addEventListener("submit", async function (e) 
     status = "Nicht konform";
   }
 
-  // Payload für PDFMonkey
+  // JSON-Payload erstellen
   const payload = {
     unternehmen: getValue("unternehmen"),
     branche: getValue("branche"),
@@ -35,11 +35,7 @@ document.getElementById("kiForm").addEventListener("submit", async function (e) 
     bewertung: bewertung,
     status: status,
     datum: new Date().toLocaleDateString("de-DE"),
-    gueltig: "31.12.2025",
-    badge: "https://check.ki-sicherheit.jetzt/badges/ki-ready-2025.png",
-    empfehlung1: "Führen Sie ein zentrales Verzeichnis über eingesetzte KI-Systeme.",
-    empfehlung2: "Prüfen Sie AV-Verträge mit Anbietern wie OpenAI, Midjourney oder Microsoft.",
-    empfehlung3: "Ergänzen Sie Ihre Datenschutzerklärung um Informationen zum KI-Einsatz."
+    gueltig_bis: "31.12.2025"
   };
 
   // PDFMonkey-Webhook senden
@@ -47,7 +43,7 @@ document.getElementById("kiForm").addEventListener("submit", async function (e) 
     const response = await fetch("https://hook.eu2.make.com/kuupzg3nxvpy5xm84zb7j8pmrcon2r2r", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
+      body: JSON.stringify(payload)
     });
 
     if (response.ok) {
