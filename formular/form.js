@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const unternehmen = formData.get("unternehmen") || "Muster GmbH";
     const branche = formData.get("branche") || "Nicht angegeben";
-    const benchmarking = formData.get("benchmarking") === "ja";
+const benchmarking = formData.get("benchmarking")?.toLowerCase() === "ja";
     const datum = new Date().toLocaleDateString("de-DE");
 
     const bewertung = getBewertung(score);
