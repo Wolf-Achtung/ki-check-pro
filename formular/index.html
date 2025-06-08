@@ -1,84 +1,70 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <title>KI-Check Pro – Jetzt starten</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&display=swap">
+  <meta charset="UTF-8">
+  <title>KI-Check Pro</title>
   <style>
     body {
-      font-family: "IBM Plex Mono", monospace;
-      max-width: 800px;
+      font-family: "Helvetica", sans-serif;
+      max-width: 720px;
       margin: 2em auto;
       padding: 1em;
-      color: #0b2d4f;
-      background-color: #f9f9f9;
-    }
-    h1 {
-      font-size: 1.8em;
-      margin-bottom: 0.5em;
+      background: #f8fafc;
     }
     label {
+      display: block;
+      margin-top: 1em;
       font-weight: bold;
     }
-    fieldset {
-      margin-bottom: 1.2em;
-      border: none;
+    input, select {
+      padding: 0.5em;
+      width: 100%;
+      margin-top: 0.3em;
     }
     button {
-      background-color: #0055cc;
-      color: white;
-      padding: 0.6em 1.4em;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      font-family: inherit;
-    }
-    button:hover {
-      background-color: #003f9a;
+      margin-top: 1.5em;
+      padding: 0.7em 1.5em;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
-  <h1>KI-Check Pro – Jetzt starten</h1>
-
+  <h1>KI–Check Pro – Jetzt starten</h1>
   <form id="kiForm">
-    <fieldset>
-      <label for="unternehmen">Unternehmen:</label><br>
-      <input type="text" id="unternehmen" name="unternehmen" required><br><br>
+    <label for="unternehmen">Unternehmen:</label>
+    <input id="unternehmen" name="unternehmen" type="text" required>
 
-      <label for="name">Name:</label><br>
-      <input type="text" id="name" name="name" required><br><br>
+    <label for="name">Ihr Name:</label>
+    <input id="name" name="name" type="text" required>
 
-      <label for="branche">Branche:</label><br>
-      <select id="branche" name="branche" required>
-        <option value="">Bitte auswählen</option>
-        <option>Medien</option>
-        <option>Bildung</option>
-        <option>Gesundheitswesen</option>
-        <option>Industrie</option>
-        <option>Beratung</option>
-        <option>Verwaltung</option>
-        <option>Handel</option>
-        <option>IT / Software</option>
-      </select><br><br>
+    <label for="branche">Branche:</label>
+    <select id="branche" name="branche" required>
+      <option disabled selected>Bitte auswählen</option>
+      <option>Industrie</option>
+      <option>Medien</option>
+      <option>Gesundheitswesen</option>
+      <option>Bildung</option>
+      <option>Verwaltung</option>
+      <option>Handel</option>
+      <option>IT / Software</option>
+      <option>Sonstige</option>
+    </select>
 
-      <label>Selbstständig / Freiberuflich?</label><br>
-      <input type="radio" id="freiJa" name="selbststaendig" value="ja" required> <label for="freiJa">Ja</label>
-      <input type="radio" id="freiNein" name="selbststaendig" value="nein"> <label for="freiNein">Nein</label>
-    </fieldset>
+    <label>Selbstständig / Freiberuflich?</label>
+    <input type="radio" name="selbststaendig" value="ja" required> Ja
+    <input type="radio" name="selbststaendig" value="nein"> Nein
 
-    <fieldset>
+
       <label for="massnahmen">Geplante Maßnahmen:</label><br>
       <select id="massnahmen" name="massnahmen" required>
         <option value="">Bitte auswählen</option>
         <option>Beratung / Strategie</option>
         <option>Risikoanalyse</option>
         <option>Datenschutz / Compliance</option>
-        <option>KI-Tool-Integration, z.B. KI-Agents</option>
+        <option>KI-Projekte starten, z.B. KI-Agents</option>
         <option>Mitarbeiterschulung / Change Management</option>
         <option>noch unklar</option>
       </select>
-    </fieldset>
 
     <!-- FRAGEN 1–10 -->
     <fieldset>

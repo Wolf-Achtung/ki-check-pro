@@ -99,7 +99,66 @@ const payload = {
     return "";
   }
 
-  function getValidUntil() {
+  function getValidUntil() {document.getElementById("kiForm").addEventListener("submit", async function (e) {
+  e.preventDefault();
+  const form = e.target;
+
+  const getValue = (name) => form.elements[name]?.value?.trim() || "";
+
+  // Score berechnen
+  let score = 0;
+  for (let i = 1; i <= 10; i++) {
+    score += parseInt(getValue("q" + i)) || 0;
+  }
+
+  let bewertung = "", status = "", badge = "";
+  if (score >= 24) {
+    bewertung = "KI-Ready 2025";
+    status = "Konform";
+    badge = "https://check.ki-sicherheit.jetzt/badges/ki-ready-2025.png";
+  } else if (score >= 18) {
+    bewertung = "Solide Basis";
+    status = "Ausbaufähig";
+  } else {
+    bewertung = "Handlungsbedarf";
+    status = "Nicht konform";
+  }
+
+  const payload = {
+    unternehmen: getValue("unternehmen"),
+    name: getValue("name"),
+    branche: getValue("branche"),
+    freiberuflich: getValue("selbststaendig"),
+    maßnahme: getValue("massnahmen"),
+    score,
+    bewertung,
+    status,
+    badge,
+    datum: new Date().toLocaleDateString("de-DE"),
+    gueltig: "31.12.2025",
+    empfehlung1: "Prüfen Sie die technischen Schutzmaßnahmen.",
+    empfehlung2: "Ergänzen Sie Ihre Datenschutzerklärung um KI.",
+    empfehlung3: "Dokumentieren Sie Zuständigkeiten klar."
+  };
+
+  try {
+    const response = await fetch("https://hook.eu2.make.com/kuupzg3nxvpy5xm84zb7j8pmrcon2r2r", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+
+    if (response.ok) {
+      alert("Vielen Dank! Ihr Zertifikat wird jetzt erstellt.");
+      form.reset();
+    } else {
+      alert("Fehler beim Senden: " + response.statusText);
+    }
+  } catch (err) {
+    alert("Technischer Fehler beim Versand.");
+    console.error(err);
+  }
+});
     const now = new Date();
     return `${now.getDate()}.${now.getMonth() + 1}.${now.getFullYear() + 1}`;
   }
