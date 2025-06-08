@@ -1,7 +1,8 @@
 document.getElementById("kiForm").addEventListener("submit", async function (e) {
   e.preventDefault();
 
-  const formData = new FormData(e.target);
+const form = e.target; // wichtig für form.reset()
+  const formData = new FormData(form);
 
   const unternehmen = formData.get("unternehmen")?.trim();
   const name = formData.get("name")?.trim();
@@ -68,13 +69,13 @@ const payload = {
       });
 
       if (res.ok) {
-        alert("Zertifikat wird generiert!");
+        alert("Vielen Dank - Ihr Zertifikat wird erstellt!");
         form.reset();
       } else {
         alert("Fehler beim Senden. Bitte erneut versuchen.");
       }
     } catch (error) {
-      console.error("❌ Fehler beim Webhook-Aufruf:", error);
+      console.error("Fehler beim Webhook-Aufruf:", error);
       alert("Verbindungsfehler. Bitte später erneut versuchen.");
     }
   });
