@@ -44,10 +44,12 @@
   <form id="kiForm">
     <fieldset>
       <label for="unternehmen">Unternehmen:</label><br>
-      <input type="text" name="unternehmen" required><br><br>
+      <input id="unternehmen" type="text" name="unternehmen" required><br><br>
+<label for="name">Ihr Name:</label><br>
+<input id="name" type="text" name="name" required><br><br>
 
      <label>Branche:</label>
-<select name="branche" required>
+<select id="branche" name="branche" required></select>
   <option value="Industrie">Industrie</option>
   <option value="Medien">Medien</option>
   <option value="Gesundheitswesen">Gesundheitswesen</option>
@@ -58,18 +60,18 @@
 </select><br><br>
 
 <label>Möchten Sie am Benchmark teilnehmen?</label><br>
-<input type="radio" name="benchmark" value="ja" required /> Ja
-<input type="radio" name="benchmark" value="nein" /> Nein
+<input type="radio" id="benchmark_ja" name="benchmark" value="ja" required> Ja
+<input type="radio" id="benchmark_nein" name="benchmark" value="nein"> Nein
 <br><br>
 
       <label>Selbstständig / Freiberuflich?</label><br>
-      <input type="radio" name="selbststaendig" value="ja" required> Ja
-      <input type="radio" name="selbststaendig" value="nein"> Nein
+      <input type="radio" id="selbststaendig_ja" name="selbststaendig" value="ja" required> Ja
+      <input type="radio" id="selbststaendig_nein" name="selbststaendig" value="nein"> Nein
     </fieldset>
 
     <fieldset>
       <label for="massnahmen">Geplante Maßnahmen:</label><br>
-      <select name="massnahmen" required>
+      <select id="massnahmen" name="massnahmen" required><
         <option value="">Bitte auswählen</option>
         <option>Beratung / Strategie</option>
         <option>Risikoanalyse</option>
