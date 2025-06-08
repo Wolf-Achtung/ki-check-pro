@@ -1,133 +1,121 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const form = document.querySelector("form");
+document.getElementById("ki-check-form").addEventListener("submit", async function (e) {
+  e.preventDefault();
 
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const formData = new FormData(form);
+  const formData = new FormData(this);
 
-    const getValue = (name) => parseInt(formData.get(name)) || 0;
+  const unternehmen = formData.get("unternehmen") || "Muster GmbH";
+  const name = formData.get("name") || "Max Mustermann";
+  const branche = formData.get("branche") || "Nicht angegeben";
+  const freiberuflich = formData.get("freiberuflich") === "ja";
+  const maßnahme = formData.get("maßnahme") || "Nicht angegeben";
+  const benchmark = formData.get("benchmark") === "ja";
 
-    const score =
-      getValue("q1") + getValue("q2") + getValue("q3") + getValue("q4") + getValue("q5") +
-      getValue("q6") + getValue("q7") + getValue("q8") + getValue("q9") + getValue("q10");
-
-    const unternehmen = formData.get("unternehmen") || "Muster GmbH";
-    const branche = formData.get("branche") || "Nicht angegeben";
-const benchmark = formData.get("benchmark")?.toLowerCase() === "ja";
-    const datum = new Date().toLocaleDateString("de-DE");
-
-    const bewertung = getBewertung(score);
-    const status = getStatus(score);
-    const badge = getBadge(score);
-    const gueltig = getValidUntil();
-
-    const empfehlung1 = getRecommendation(score, 1);
-    const empfehlung2 = getRecommendation(score, 2);
-    const empfehlung3 = getRecommendation(score, 3);
-
-    const benchmarkData = benchmark ? getBenchmarkData(branche) : null;
-
-    const payload = {
-      unternehmen,
-      branche,
-      benchmark,
-      datum,
-      score,
-      bewertung,
-      status,
-      badge,
-      gueltig,
-      empfehlung1,
-      empfehlung2,
-      empfehlung3,
-     benchmark_durchschnitt: benchmarkData?.durchschnitt || "",
-  benchmark_vergleich: benchmarkData?.vergleich || ""
-    };
-
-
-console.log("Benchmark aktiv?", benchmark);
-console.log("Benchmark-Daten:", benchmarkData);
-console.log("Payload:", payload);
-
-    try {
-      const res = await fetch("https://hook.eu2.make.com/kuupzg3nxvpy5xm84zb7j8pmrcon2r2r", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
-      if (res.ok) {
-        alert("Zertifikat wird generiert!");
-        form.reset();
-      } else {
-        alert("Fehler beim Senden. Bitte erneut versuchen.");
-      }
-    } catch (error) {
-      console.error("❌ Fehler beim Webhook-Aufruf:", error);
-      alert("Verbindungsfehler. Bitte später erneut versuchen.");
-    }
-  });
-
-  function getBewertung(score) {
-    if (score >= 25) return "Sehr gut – Ihre KI-Prozesse sind weitgehend konform.";
-    if (score >= 18) return "Solide – einige Optimierungen empfehlenswert.";
-    return "Kritisch – es besteht akuter Handlungsbedarf.";
+  let score = 0;
+  for (let i = 1; i <= 10; i++) {
+    const val = parseInt(formData.get(`q${i}`)) || 0;
+    score += val;
   }
 
-  function getStatus(score) {
-    if (score >= 25) return "KI-Ready 2025";
-    if (score >= 18) return "Ausbaufähig";
-    return "Nicht konform";
+  let bewertung, status, badge;
+  if (score >= 25) {
+    bewertung = "Exzellent";
+    status = "KI-Ready 2025";
+    badge = "https://check.ki-sicherheit.jetzt/badges/ki-ready-2025.png";
+  } else if (score >= 18) {
+    bewertung = "Solide Basis";
+    status = "In Vorbereitung";
+    badge = "https://check.ki-sicherheit.jetzt/badges/neutral.png";
+  } else {
+    bewertung = "Ausbaufähig";
+    status = "Handlungsbedarf";
+    badge = "https://check.ki-sicherheit.jetzt/badges/neutral.png";
   }
 
-  function getBadge(score) {
-    if (score >= 24) {
-      return "https://check.ki-sicherheit.jetzt/badges/ki-ready-2025.png";
-    }
-    return "";
+  const datum = new Date().toLocaleDateString("de-DE");
+  const gueltig = new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toLocaleDateString("de-DE");
+
+  // Handlungsempfehlungen
+  const empfehlungen = getEmpfehlungen(score);
+
+  // Benchmark-Daten laden (nur wenn Opt-in)
+  let benchmark_durchschnitt = null;
+  let benchmark_vergleich = null;
+
+  if (benchmark) {
+    const benchmarkData = getBenchmarkData(branche);
+    benchmark_durchschnitt = benchmarkData.durchschnitt;
+    benchmark_vergleich = benchmarkData.vergleich;
   }
 
-  function getValidUntil() {
-    const now = new Date();
-    return `${now.getDate()}.${now.getMonth() + 1}.${now.getFullYear() + 1}`;
-  }
+  const payload = {
+    unternehmen,
+    name,
+    branche,
+    freiberuflich,
+    maßnahme,
+    score,
+    bewertung,
+    status,
+    badge,
+    datum,
+    gueltig,
+    empfehlung1: empfehlungen[0],
+    empfehlung2: empfehlungen[1],
+    empfehlung3: empfehlungen[2],
+    benchmark: benchmark,
+    benchmark_durchschnitt,
+    benchmark_vergleich
+  };
 
-  function getRecommendation(score, index) {
-    const tipps = {
-      low: [
-        "Erarbeiten Sie eine grundlegende KI-Strategie.",
-        "Erstellen Sie ein vollständiges KI-Verzeichnis.",
-        "Definieren Sie Verantwortlichkeiten & Prozesse."
-      ],
-      medium: [
-        "Ergänzen Sie Ihre Risikoanalyse nach EU AI Act.",
-        "Überprüfen Sie Datenschutz & Auftragsverarbeitung.",
-        "Implementieren Sie eine interne Auditierung."
-      ],
-      high: [
-        "Planen Sie ein externes Assessment Ihrer KI-Systeme.",
-        "Nutzen Sie Transparenz-Labels für mehr Vertrauen.",
-        "Kommunizieren Sie Ihr KI-Governance-Modell klar."
-      ]
-    };
-
-    if (score <= 14) return tipps.low[index - 1];
-    if (score <= 24) return tipps.medium[index - 1];
-    return tipps.high[index - 1];
-  }
-
-  function getBenchmarkData(branche) {
-    const data = {
-      "Industrie": { durchschnitt: 19, vergleich: "Sie liegen im Mittelfeld der Industrie." },
-      "Medien": { durchschnitt: 22, vergleich: "Medienhäuser setzen KI bereits stark ein." },
-      "Gesundheitswesen": { durchschnitt: 17, vergleich: "Im Gesundheitsbereich besteht Nachholbedarf." },
-      "Bildung": { durchschnitt: 18, vergleich: "Bildungseinrichtungen starten meist noch Pilotprojekte." },
-      "Verwaltung": { durchschnitt: 16, vergleich: "Öffentliche Stellen stehen oft noch am Anfang." },
-      "Handel": { durchschnitt: 21, vergleich: "Viele Handelsunternehmen nutzen KI in Kundenanalysen." },
-      "IT / Software": { durchschnitt: 24, vergleich: "Die IT-Branche ist bei KI führend." },
-      "Nicht angegeben": { durchschnitt: null, vergleich: "Kein Benchmark möglich ohne Branchenangabe." }
-    };
-
-    return data[branche] || data["Nicht angegeben"];
+  try {
+    await fetch("https://hook.eu2.make.com/kuupzg3nxvpy5xm84zb7j8pmrcon2r2r", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+    alert("Ihre Eingaben wurden erfolgreich übermittelt.");
+    this.reset();
+  } catch (error) {
+    alert("Fehler beim Absenden. Bitte später erneut versuchen.");
+    console.error(error);
   }
 });
+
+// Hilfsfunktionen
+
+function getEmpfehlungen(score) {
+  if (score >= 25) {
+    return [
+      "Nutzen Sie Ihre starke Ausgangslage, um KI aktiv in Ihre Kernprozesse zu integrieren.",
+      "Skalieren Sie bestehende Pilotprojekte in die Breite.",
+      "Stellen Sie ein internes KI-Governance-Team auf."
+    ];
+  } else if (score >= 18) {
+    return [
+      "Definieren Sie konkrete Ziele für Ihre KI-Strategie.",
+      "Identifizieren Sie datenbasierte Prozesse mit Potenzial.",
+      "Sensibilisieren Sie Ihre Teams für KI-Ethik und Datenschutz."
+    ];
+  } else {
+    return [
+      "Starten Sie mit einer Bestandsaufnahme Ihrer Daten und IT-Infrastruktur.",
+      "Definieren Sie ein Pilotprojekt mit klarem Business-Nutzen.",
+      "Holen Sie externe Expertise zur KI-Einführung ins Haus."
+    ];
+  }
+}
+
+function getBenchmarkData(branche) {
+  const daten = {
+    "Industrie": { durchschnitt: 19, vergleich: "Sie liegen im Mittelfeld der Industrie." },
+    "Medien": { durchschnitt: 22, vergleich: "Medienhäuser setzen KI bereits stark ein." },
+    "Gesundheitswesen": { durchschnitt: 17, vergleich: "Im Gesundheitsbereich besteht Nachholbedarf." },
+    "Bildung": { durchschnitt: 18, vergleich: "Bildungseinrichtungen starten meist noch Pilotprojekte." },
+    "Verwaltung": { durchschnitt: 16, vergleich: "Öffentliche Stellen stehen oft noch am Anfang." },
+    "Handel": { durchschnitt: 21, vergleich: "Viele Handelsunternehmen nutzen KI in Kundenanalysen." },
+    "IT / Software": { durchschnitt: 24, vergleich: "Die IT-Branche ist bei KI führend." },
+    "Nicht angegeben": { durchschnitt: null, vergleich: "Kein Benchmark möglich ohne Branchenangabe." }
+  };
+
+  return daten[branche] || daten["Nicht angegeben"];
+}
