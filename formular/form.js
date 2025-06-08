@@ -45,22 +45,23 @@ const form = e.target; // wichtig für form.reset()
 
 
 const payload = {
-    unternehmen,
-    name,
-    branche,
-    freiberuflich,
-    maßnahme,
-    score,
-    bewertung,
-    status,
-    badge,
-    datum,
-    gueltig,
-    empfehlung1: empfehlungen[0],
-    empfehlung2: empfehlungen[1],
-    empfehlung3: empfehlungen[2]
-  };
+  unternehmen,
+  name,
+  branche,
+  freiberuflich,
+  maßnahme,
+  score: score || 0, // ← fallback
+  bewertung,
+  status,
+  badge,
+  datum,
+  gueltig,
+  empfehlung1: empfehlungen[0] || "",
+  empfehlung2: empfehlungen[1] || "",
+  empfehlung3: empfehlungen[2] || ""
+};
 
+console.log(JSON.stringify(payload, null, 2));
     try {
       const res = await fetch("https://hook.eu2.make.com/kuupzg3nxvpy5xm84zb7j8pmrcon2r2r", {
         method: "POST",
