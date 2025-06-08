@@ -46,17 +46,21 @@
       <label for="unternehmen">Unternehmen:</label><br>
       <input type="text" name="unternehmen" required><br><br>
 
-      <label for="branche">Branche:</label><br>
-      <select name="branche" required>
-        <option value="">Bitte auswählen</option>
-        <option>Medien</option>
-        <option>Bildung</option>
-        <option>Gesundheit</option>
-        <option>Industrie</option>
-        <option>Beratung</option>
-        <option>Öffentlicher Sektor</option>
-        <option>Finanzen</option>
-      </select><br><br>
+     <label>Branche:</label>
+<select name="branche" required>
+  <option value="Industrie">Industrie</option>
+  <option value="Medien">Medien</option>
+  <option value="Gesundheitswesen">Gesundheitswesen</option>
+  <option value="Bildung">Bildung</option>
+  <option value="Verwaltung">Verwaltung</option>
+  <option value="Handel">Handel</option>
+  <option value="IT / Software">IT / Software</option>
+</select><br>
+
+<label>Möchten Sie am Benchmark teilnehmen?</label>
+<input type="radio" name="benchmarking" value="ja" required /> Ja
+<input type="radio" name="benchmarking" value="nein" /> Nein
+<br>
 
       <label>Selbstständig / Freiberuflich?</label><br>
       <input type="radio" name="selbststaendig" value="ja" required> Ja

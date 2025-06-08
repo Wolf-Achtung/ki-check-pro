@@ -3,10 +3,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
-
     const formData = new FormData(form);
 
-    // Antworten erfassen
     const getValue = (name) => parseInt(formData.get(name)) || 0;
 
     const score =
@@ -21,8 +19,9 @@ document.addEventListener("DOMContentLoaded", () => {
       getValue("q9") +
       getValue("q10");
 
-    // Zusatzinfos
     const unternehmen = formData.get("unternehmen") || "Muster GmbH";
+    const branche = formData.get("branche") || "Nicht angegeben";
+    const benchmarking = formData.get("benchmarking") === "ja";
     const datum = new Date().toLocaleDateString("de-DE");
 
     const bewertung = getBewertung(score);
@@ -30,13 +29,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const badge = getBadge(score);
     const gueltig = getValidUntil();
 
-    // Empfehlungen (3 Tipps passend zum Score)
     const empfehlung1 = getRecommendation(score, 1);
     const empfehlung2 = getRecommendation(score, 2);
     const empfehlung3 = getRecommendation(score, 3);
 
     const payload = {
       unternehmen,
+      branche,
+      benchmarking,
       datum,
       score,
       bewertung,
@@ -48,9 +48,8 @@ document.addEventListener("DOMContentLoaded", () => {
       empfehlung3,
     };
 
-    console.log("📦 Gesendeter Payload:", payload); // Debugausgabe
+    console.log("📦 Gesendeter Payload:", payload);
 
-    // Senden an Make Webhook
     try {
       const res = await fetch("https://hook.eu2.make.com/kuupzg3nxvpy5xm84zb7j8pmrcon2r2r", {
         method: "POST",
@@ -83,11 +82,11 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function getBadge(score) {
-  if (score >= 24) {
-    return "https://check.ki-sicherheit.jetzt/badges/ki-ready-2025.png";
+    if (score >= 24) {
+      return "https://check.ki-sicherheit.jetzt/badges/ki-ready-2025.png";
+    }
+    return "";
   }
-  return ""; // Kein Badge anzeigen
-}
 
   function getValidUntil() {
     const now = new Date();
