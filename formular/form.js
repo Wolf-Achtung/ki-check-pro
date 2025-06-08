@@ -40,7 +40,8 @@ const benchmark = formData.get("benchmark")?.toLowerCase() === "ja";
       empfehlung1,
       empfehlung2,
       empfehlung3,
-      benchmark: benchmarkData
+     benchmark_durchschnitt: benchmarkData?.durchschnitt || "",
+  benchmark_vergleich: benchmarkData?.vergleich || ""
     };
 
     console.log("📦 Gesendeter Payload:", payload);
