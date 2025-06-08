@@ -1,53 +1,64 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const form = document.querySelector("form");
+document.getElementById("kiForm").addEventListener("submit", async function (e) {
+  e.preventDefault();
 
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const formData = new FormData(form);
+  const formData = new FormData(e.target);
 
-    const getValue = (name) => parseInt(formData.get(name)) || 0;
+  const unternehmen = formData.get("unternehmen")?.trim();
+  const name = formData.get("name")?.trim();
+  const branche = formData.get("branche")?.trim();
+  const freiberuflich = formData.get("selbststaendig");
+  const maßnahme = formData.get("massnahmen");
 
-    const score =
-      getValue("q1") + getValue("q2") + getValue("q3") + getValue("q4") + getValue("q5") +
-      getValue("q6") + getValue("q7") + getValue("q8") + getValue("q9") + getValue("q10");
+  let score = 0;
+  for (let i = 1; i <= 10; i++) {
+    const val = parseInt(formData.get(`q1${i > 9 ? 0 : i}`));
+    if (!isNaN(val)) score += val;
+  }
 
-    const unternehmen = formData.get("unternehmen") || "Muster GmbH";
-    const branche = formData.get("branche") || "Nicht angegeben";
-const benchmark = formData.get("benchmark")?.toLowerCase() === "ja";
-    const datum = new Date().toLocaleDateString("de-DE");
+  let status = "";
+  let bewertung = "";
+  let badge = "";
 
-    const bewertung = getBewertung(score);
-    const status = getStatus(score);
-    const badge = getBadge(score);
-    const gueltig = getValidUntil();
+  if (score >= 25) {
+    status = "konform & zukunftsfit";
+    bewertung = "Sehr guter Stand – Ihr Unternehmen ist KI-ready.";
+    badge = "https://ki-sicherheit.jetzt/assets/ki-ready-2025.png";
+  } else if (score >= 17) {
+    status = "teils konform, erweiterbar";
+    bewertung = "Guter Ansatz – punktuelle Verbesserungen sinnvoll.";
+    badge = "https://ki-sicherheit.jetzt/assets/ki-ready-2025.png";
+  } else {
+    status = "Grundlagen fehlen";
+    bewertung = "Wichtige Voraussetzungen müssen noch geschaffen werden.";
+    badge = "https://ki-sicherheit.jetzt/assets/ki-ready-2025.png";
+  }
 
-    const empfehlung1 = getRecommendation(score, 1);
-    const empfehlung2 = getRecommendation(score, 2);
-    const empfehlung3 = getRecommendation(score, 3);
+  const empfehlungen = [
+    "Nutzen Sie gezielte Schulungen für Mitarbeitende im Umgang mit KI.",
+    "Erstellen Sie ein zentrales Verzeichnis der KI-Systeme.",
+    "Integrieren Sie Datenschutz und Risikoprüfung frühzeitig in Ihre KI-Projekte."
+  ];
 
-    const benchmarkData = benchmark ? getBenchmarkData(branche) : null;
-
-    const payload = {
-      unternehmen,
-      branche,
-      benchmark,
-      datum,
-      score,
-      bewertung,
-      status,
-      badge,
-      gueltig,
-      empfehlung1,
-      empfehlung2,
-      empfehlung3,
-     benchmark_durchschnitt: benchmarkData?.durchschnitt || "",
-  benchmark_vergleich: benchmarkData?.vergleich || ""
-    };
+  const datum = new Date().toLocaleDateString("de-DE");
+  const gueltig = new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toLocaleDateString("de-DE");
 
 
-console.log("Benchmark aktiv?", benchmark);
-console.log("Benchmark-Daten:", benchmarkData);
-console.log("Payload:", payload);
+const payload = {
+    unternehmen,
+    name,
+    branche,
+    freiberuflich,
+    maßnahme,
+    score,
+    bewertung,
+    status,
+    badge,
+    datum,
+    gueltig,
+    empfehlung1: empfehlungen[0],
+    empfehlung2: empfehlungen[1],
+    empfehlung3: empfehlungen[2]
+  };
 
     try {
       const res = await fetch("https://hook.eu2.make.com/kuupzg3nxvpy5xm84zb7j8pmrcon2r2r", {

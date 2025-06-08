@@ -44,28 +44,32 @@
   <form id="kiForm">
     <fieldset>
       <label for="unternehmen">Unternehmen:</label><br>
-      <input type="text" name="unternehmen" required><br><br>
+      <input type="text" id="unternehmen" name="unternehmen" required><br><br>
+
+      <label for="name">Name:</label><br>
+      <input type="text" id="name" name="name" required><br><br>
 
       <label for="branche">Branche:</label><br>
-      <select name="branche" required>
+      <select id="branche" name="branche" required>
         <option value="">Bitte auswählen</option>
         <option>Medien</option>
         <option>Bildung</option>
-        <option>Gesundheit</option>
+        <option>Gesundheitswesen</option>
         <option>Industrie</option>
         <option>Beratung</option>
-        <option>Öffentlicher Sektor</option>
-        <option>Finanzen</option>
+        <option>Verwaltung</option>
+        <option>Handel</option>
+        <option>IT / Software</option>
       </select><br><br>
 
       <label>Selbstständig / Freiberuflich?</label><br>
-      <input type="radio" name="selbststaendig" value="ja" required> Ja
-      <input type="radio" name="selbststaendig" value="nein"> Nein
+      <input type="radio" id="freiJa" name="selbststaendig" value="ja" required> <label for="freiJa">Ja</label>
+      <input type="radio" id="freiNein" name="selbststaendig" value="nein"> <label for="freiNein">Nein</label>
     </fieldset>
 
     <fieldset>
       <label for="massnahmen">Geplante Maßnahmen:</label><br>
-      <select name="massnahmen" required>
+      <select id="massnahmen" name="massnahmen" required>
         <option value="">Bitte auswählen</option>
         <option>Beratung / Strategie</option>
         <option>Risikoanalyse</option>
