@@ -8,16 +8,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const getValue = (name) => parseInt(formData.get(name)) || 0;
 
     const score =
-      getValue("q1") +
-      getValue("q2") +
-      getValue("q3") +
-      getValue("q4") +
-      getValue("q5") +
-      getValue("q6") +
-      getValue("q7") +
-      getValue("q8") +
-      getValue("q9") +
-      getValue("q10");
+      getValue("q1") + getValue("q2") + getValue("q3") + getValue("q4") + getValue("q5") +
+      getValue("q6") + getValue("q7") + getValue("q8") + getValue("q9") + getValue("q10");
 
     const unternehmen = formData.get("unternehmen") || "Muster GmbH";
     const branche = formData.get("branche") || "Nicht angegeben";
@@ -33,6 +25,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const empfehlung2 = getRecommendation(score, 2);
     const empfehlung3 = getRecommendation(score, 3);
 
+    const benchmarkData = benchmarking ? getBenchmarkData(branche) : null;
+
     const payload = {
       unternehmen,
       branche,
@@ -46,6 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
       empfehlung1,
       empfehlung2,
       empfehlung3,
+      benchmark: benchmarkData
     };
 
     console.log("📦 Gesendeter Payload:", payload);
@@ -115,5 +110,20 @@ document.addEventListener("DOMContentLoaded", () => {
     if (score <= 14) return tipps.low[index - 1];
     if (score <= 24) return tipps.medium[index - 1];
     return tipps.high[index - 1];
+  }
+
+  function getBenchmarkData(branche) {
+    const data = {
+      "Industrie": { durchschnitt: 19, vergleich: "Sie liegen im Mittelfeld der Industrie." },
+      "Medien": { durchschnitt: 22, vergleich: "Medienhäuser setzen KI bereits stark ein." },
+      "Gesundheitswesen": { durchschnitt: 17, vergleich: "Im Gesundheitsbereich besteht Nachholbedarf." },
+      "Bildung": { durchschnitt: 18, vergleich: "Bildungseinrichtungen starten meist noch Pilotprojekte." },
+      "Verwaltung": { durchschnitt: 16, vergleich: "Öffentliche Stellen stehen oft noch am Anfang." },
+      "Handel": { durchschnitt: 21, vergleich: "Viele Handelsunternehmen nutzen KI in Kundenanalysen." },
+      "IT / Software": { durchschnitt: 24, vergleich: "Die IT-Branche ist bei KI führend." },
+      "Nicht angegeben": { durchschnitt: null, vergleich: "Kein Benchmark möglich ohne Branchenangabe." }
+    };
+
+    return data[branche] || data["Nicht angegeben"];
   }
 });
