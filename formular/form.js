@@ -47,25 +47,31 @@ document.getElementById("ki-check-form").addEventListener("submit", async functi
     benchmark_vergleich = benchmarkData.vergleich;
   }
 
-  const payload = {
-    unternehmen,
-    name,
-    branche,
-    freiberuflich,
-    maßnahme,
-    score,
-    bewertung,
-    status,
-    badge,
-    datum,
-    gueltig,
-    empfehlung1: empfehlungen[0],
-    empfehlung2: empfehlungen[1],
-    empfehlung3: empfehlungen[2],
-    benchmark: benchmark,
-    benchmark_durchschnitt,
-    benchmark_vergleich
-  };
+ const payload = {
+  unternehmen,
+  name,
+  branche,
+  freiberuflich,
+  maßnahme,
+  score,
+  bewertung,
+  status,
+  badge,
+  datum,
+  gueltig,
+  empfehlung1: empfehlungen[0],
+  empfehlung2: empfehlungen[1],
+  empfehlung3: empfehlungen[2],
+  benchmark: benchmark
+};
+
+// Nur wenn Benchmark aktiv ist und Werte vorhanden sind
+if (benchmark && benchmark_durchschnitt && benchmark_vergleich) {
+  payload.benchmark_durchschnitt = benchmark_durchschnitt;
+  payload.benchmark_vergleich = benchmark_vergleich;
+}
+
+console.log("📦 Payload an Make:", JSON.stringify(payload, null, 2));
 
   try {
     await fetch("https://hook.eu2.make.com/kuupzg3nxvpy5xm84zb7j8pmrcon2r2r", {
