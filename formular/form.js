@@ -62,6 +62,12 @@ const payload = {
 };
 
 console.log(JSON.stringify(payload, null, 2));
+Object.keys(payload).forEach((key) => {
+  if (payload[key] === undefined || payload[key] === null) {
+    delete payload[key];
+  }
+});
+
     try {
       const res = await fetch("https://hook.eu2.make.com/kuupzg3nxvpy5xm84zb7j8pmrcon2r2r", {
         method: "POST",
