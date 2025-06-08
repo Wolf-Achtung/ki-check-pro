@@ -44,7 +44,10 @@ const benchmark = formData.get("benchmark")?.toLowerCase() === "ja";
   benchmark_vergleich: benchmarkData?.vergleich || ""
     };
 
-    console.log("📦 Gesendeter Payload:", payload);
+
+console.log("Benchmark aktiv?", benchmark);
+console.log("Benchmark-Daten:", benchmarkData);
+console.log("Payload:", payload);
 
     try {
       const res = await fetch("https://hook.eu2.make.com/kuupzg3nxvpy5xm84zb7j8pmrcon2r2r", {
