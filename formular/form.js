@@ -9,21 +9,17 @@ document.getElementById("kiForm").addEventListener("submit", async function (e) 
   }
 
   const payload = {
-    unternehmen: getVal("unternehmen"),
-    name: getVal("name"),
-    branche: getVal("branche"),
-    freiberuflich: getVal("selbststaendig"),
-    maßnahme: getVal("massnahmen"),
-    score,
-    bewertung: getBewertung(score),
-    status: getStatus(score),
-    badge: getBadge(score),
-    datum: new Date().toLocaleDateString("de-DE"),
-    gueltig: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toLocaleDateString("de-DE"),
-    empfehlung1: getEmpfehlung(score, 0),
-    empfehlung2: getEmpfehlung(score, 1),
-    empfehlung3: getEmpfehlung(score, 2)
-  };
+  unternehmen: getVal("unternehmen"),
+  datum: new Date().toLocaleDateString("de-DE"),
+  gueltig: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toLocaleDateString("de-DE"),
+  score,
+  status: getStatus(score),
+  bewertung: getBewertung(score),
+  badge_url: getBadge(score),
+  empfehlung1: getEmpfehlung(score, 0),
+  empfehlung2: getEmpfehlung(score, 1),
+  empfehlung3: getEmpfehlung(score, 2)
+};
 
   console.log("📦 Payload an Make:", JSON.stringify(payload, null, 2));
 
