@@ -1,4 +1,4 @@
-// form.js – erweitert für umfangreiche Gutachtenstruktur mit detaillierter JSON-Ausgabe
+// form.js – erweitert für vollständiges Gutachten mit ausführlicher JSON-Struktur
 
 const form = document.getElementById("kiForm");
 
@@ -43,6 +43,10 @@ form.addEventListener("submit", function (event) {
     badge_url = "https://example.com/badge-exzellent.png";
   }
 
+  const heute = new Date();
+  const datum = heute.toISOString().split("T")[0];
+  const gueltig_bis = new Date(heute.setFullYear(heute.getFullYear() + 1)).toISOString().split("T")[0];
+
   const payload = {
     unternehmen: formData.get("unternehmen"),
     name: formData.get("name"),
@@ -56,8 +60,8 @@ form.addEventListener("submit", function (event) {
     herausforderung: formData.get("herausforderung"),
     tools: formData.get("tools"),
     ziel: formData.get("ziel"),
-    datum: new Date().toLocaleDateString("de-DE"),
-    gueltig_bis: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toLocaleDateString("de-DE")
+    datum: datum,
+    gueltig_bis: gueltig_bis
   };
 
   fetch("https://hook.eu2.make.com/kuupzg3nxvpy5xm84zb7j8pmrcon2r2r", {
