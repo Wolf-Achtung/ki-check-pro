@@ -1,4 +1,4 @@
-// form.js – erweitert mit dynamischer Gewichtung
+// form.js – erweitert für umfangreiche Gutachtenstruktur mit detaillierter JSON-Ausgabe
 
 const form = document.getElementById("kiForm");
 
@@ -26,10 +26,7 @@ form.addEventListener("submit", function (event) {
     else if (value === "nein") score += 1;
   }
 
-  // Gewichtung anwenden
   score = Math.round(score * multiplikator);
-
-  // Selbstständig: Bonuspunkte für bestimmte Antworten
   if (selbststaendig && score < 30) score += 2;
 
   let status = "Basis";
@@ -58,27 +55,24 @@ form.addEventListener("submit", function (event) {
     badge_url: badge_url,
     herausforderung: formData.get("herausforderung"),
     tools: formData.get("tools"),
-    ziel: formData.get("ziel")
+    ziel: formData.get("ziel"),
+    datum: new Date().toLocaleDateString("de-DE"),
+    gueltig_bis: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toLocaleDateString("de-DE")
   };
-
-  console.log("Sende an Webhook:", payload);
 
   fetch("https://hook.eu2.make.com/kuupzg3nxvpy5xm84zb7j8pmrcon2r2r", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
     },
-  body: JSON.stringify(payload)
-})
-  .then((response) => {
-    if (!response.ok) throw new Error("Server error");
-    return response.text(); // nicht .json() verwenden, wenn Make nur leere Antwort sendet
+    body: JSON.stringify(payload)
   })
-  .then((data) => {
-    alert("Daten erfolgreich übermittelt.");
-  })
-  .catch((error) => {
-    console.error("Fehler beim Senden:", error);
-    alert("Fehler beim Senden der Daten.");
-  });
+    .then((response) => response.json())
+    .then((data) => {
+      alert("Daten erfolgreich übermittelt.");
+    })
+    .catch((error) => {
+      console.error("Fehler beim Senden:", error);
+      alert("Fehler beim Senden der Daten.");
+    });
 });
