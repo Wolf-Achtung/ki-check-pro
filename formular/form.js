@@ -68,17 +68,17 @@ form.addEventListener("submit", function (event) {
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify(payload)
-  })
-.then((response) => {
-  if (!response.ok) throw new Error("HTTP Error " + response.status);
-  return response.json();
+  body: JSON.stringify(payload)
 })
-    .then((data) => {
-      alert("Daten erfolgreich übermittelt.");
-    })
-    .catch((error) => {
-      console.error("Fehler beim Senden:", error);
-      alert("Fehler beim Senden der Daten.");
-    });
+  .then((response) => {
+    if (!response.ok) throw new Error("Server error");
+    return response.text(); // nicht .json() verwenden, wenn Make nur leere Antwort sendet
+  })
+  .then((data) => {
+    alert("Daten erfolgreich übermittelt.");
+  })
+  .catch((error) => {
+    console.error("Fehler beim Senden:", error);
+    alert("Fehler beim Senden der Daten.");
+  });
 });
