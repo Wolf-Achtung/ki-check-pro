@@ -64,19 +64,25 @@ form.addEventListener("submit", function (event) {
     gueltig_bis: gueltig_bis
   };
 
-  fetch("https://hook.eu2.make.com/kuupzg3nxvpy5xm84zb7j8pmrcon2r2r", {
+  console.log("⤴️ JSON an Make:", payload);
+
+ fetch("https://hook.eu2.make.com/kuupzg3nxvpy5xm84zb7j8pmrcon2r2r", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
     },
     body: JSON.stringify(payload)
   })
-    .then((response) => response.json())
+   .then((response) => {
+  if (!response.ok) throw new Error("Fehler beim Übertragen: " + response.status);
+  return response.json().catch(() => ({})); // Leerer Fallback
+})
+
     .then((data) => {
-      alert("Daten erfolgreich übermittelt.");
+      alert("✅ Daten erfolgreich übermittelt.");
     })
     .catch((error) => {
-      console.error("Fehler beim Senden:", error);
-      alert("Fehler beim Senden der Daten.");
+      console.error("❌ Fehler beim Senden:", error);
+      alert("Fehler beim Senden der Daten. Details in der Konsole.");
     });
 });
