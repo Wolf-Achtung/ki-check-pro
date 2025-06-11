@@ -70,7 +70,10 @@ form.addEventListener("submit", function (event) {
     },
     body: JSON.stringify(payload)
   })
-    .then((response) => response.json())
+.then((response) => {
+  if (!response.ok) throw new Error("HTTP Error " + response.status);
+  return response.json();
+})
     .then((data) => {
       alert("Daten erfolgreich übermittelt.");
     })
