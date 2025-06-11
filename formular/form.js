@@ -1,84 +1,81 @@
-document.getElementById("kiForm").addEventListener("submit", async function (e) {
-  e.preventDefault();
-  const form = e.target;
-  const getVal = (name) => form[name]?.value?.trim() || "";
+// form.js – erweitert mit dynamischer Gewichtung
+
+const form = document.getElementById("kiForm");
+
+form.addEventListener("submit", function (event) {
+  event.preventDefault();
+
+  const formData = new FormData(form);
+  const branchenMultiplikator = {
+    "Medien": 1.1,
+    "Bildung": 1.0,
+    "Verwaltung": 0.9,
+    "Handel": 1.0,
+    "IT / Software": 1.2
+  };
+
+  const selbststaendig = formData.get("selbststaendig") === "ja";
+  const branche = formData.get("branche") || "Allgemein";
+  const multiplikator = branchenMultiplikator[branche] || 1.0;
 
   let score = 0;
   for (let i = 1; i <= 10; i++) {
-    score += parseInt(getVal("q" + i)) || 0;
+    const value = formData.get(`q${i}`);
+    if (value === "ja") score += 3;
+    else if (value === "teilweise / geplant") score += 2;
+    else if (value === "nein") score += 1;
+  }
+
+  // Gewichtung anwenden
+  score = Math.round(score * multiplikator);
+
+  // Selbstständig: Bonuspunkte für bestimmte Antworten
+  if (selbststaendig && score < 30) score += 2;
+
+  let status = "Basis";
+  let bewertung = "Erste Grundlagen vorhanden, weiter so!";
+  let badge_url = "https://example.com/badge-basis.png";
+
+  if (score >= 27 && score <= 35) {
+    status = "Fortgeschritten";
+    bewertung = "Solide Umsetzung mit strategischem Potenzial.";
+    badge_url = "https://example.com/badge-fortgeschritten.png";
+  } else if (score > 35) {
+    status = "Exzellent";
+    bewertung = "Sie gehören zu den Vorreitern beim KI-Einsatz.";
+    badge_url = "https://example.com/badge-exzellent.png";
   }
 
   const payload = {
-  unternehmen: getVal("unternehmen"),
-  datum: new Date().toLocaleDateString("de-DE"),
-  gueltig: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toLocaleDateString("de-DE"),
-  score,
-  status: getStatus(score),
-  bewertung: getBewertung(score),
-  badge_url: getBadge(score),
-  empfehlung1: getEmpfehlung(score, 0),
-  empfehlung2: getEmpfehlung(score, 1),
-  empfehlung3: getEmpfehlung(score, 2)
-};
-
-  console.log("📦 Payload an Make:", JSON.stringify(payload, null, 2));
-
-  try {
-    const res = await fetch("https://hook.eu2.make.com/kuupzg3nxvpy5xm84zb7j8pmrcon2r2r", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
-    });
-
-    if (res.ok) {
-      alert("Vielen Dank – Ihr Zertifikat wird erstellt!");
-      form.reset();
-    } else {
-      alert("Fehler beim Versenden: " + res.statusText);
-    }
-  } catch (err) {
-    console.error("❌ Fehler beim Webhook:", err);
-    alert("Technischer Fehler – später erneut versuchen.");
-  }
-});
-
-function getBewertung(score) {
-  if (score >= 24) return "KI-Ready 2025";
-  if (score >= 18) return "Solide Basis";
-  return "Handlungsbedarf";
-}
-
-function getStatus(score) {
-  if (score >= 24) return "Konform";
-  if (score >= 18) return "Ausbaufähig";
-  return "Nicht konform";
-}
-
-function getBadge(score) {
-  if (score >= 24) return "https://check.ki-sicherheit.jetzt/badges/ki-ready-2025.png";
-  return "https://check.ki-sicherheit.jetzt/badges/neutral.png";
-}
-
-function getEmpfehlung(score, index) {
-  const tipps = {
-    low: [
-      "Erarbeiten Sie eine KI-Strategie.",
-      "Führen Sie ein KI-Systemverzeichnis.",
-      "Schulen Sie Ihre Mitarbeitenden."
-    ],
-    medium: [
-      "Führen Sie Risikoanalysen durch.",
-      "Verstärken Sie Datenschutzmaßnahmen.",
-      "Binden Sie externe Beratung ein."
-    ],
-    high: [
-      "Zeigen Sie Best Practices öffentlich.",
-      "Nutzen Sie KI-Labels.",
-      "Dokumentieren Sie laufende Reviews."
-    ]
+    unternehmen: formData.get("unternehmen"),
+    name: formData.get("name"),
+    branche: branche,
+    selbststaendig: selbststaendig ? "Ja" : "Nein",
+    massnahmen: formData.get("massnahmen"),
+    score: score,
+    bewertung: bewertung,
+    status: status,
+    badge_url: badge_url,
+    herausforderung: formData.get("herausforderung"),
+    tools: formData.get("tools"),
+    ziel: formData.get("ziel")
   };
 
-  if (score < 15) return tipps.low[index];
-  if (score < 24) return tipps.medium[index];
-  return tipps.high[index];
-}
+  console.log("Sende an Webhook:", payload);
+
+  fetch("https://hook.eu2.make.com/kuupzg3nxvpy5xm84zb7j8pmrcon2r2r", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(payload)
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      alert("Daten erfolgreich übermittelt.");
+    })
+    .catch((error) => {
+      console.error("Fehler beim Senden:", error);
+      alert("Fehler beim Senden der Daten.");
+    });
+});
